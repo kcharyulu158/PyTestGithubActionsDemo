@@ -4,7 +4,7 @@ pipeline {
     // Ensure Docker commands can run natively on the Jenkins agent
     options {
         timeout(time: 30, unit: 'MINUTES')
-        ansiColor('xterm')
+       //ansiColor('xterm')
     }
 
     stages {
