@@ -4,7 +4,7 @@ pipeline {
     // Ensure Docker commands can run natively on the Jenkins agent
     options {
         timeout(time: 30, unit: 'MINUTES')
-       //ansiColor('xterm')
+        ansiColor('xterm')
     }
 
     stages {
@@ -43,7 +43,6 @@ pipeline {
     post {
         always {
             echo 'Publishing HTML Test Reports...'
-            // Uses HTML Publisher plugin to display the interactive framework report directly inside Jenkins
             publishHTML([
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
@@ -56,8 +55,9 @@ pipeline {
             
             echo 'Cleaning up system Docker images...'
             script {
-                // Clean up the image to prevent your Jenkins server hard drive from filling up
-                sh "docker rmi selenium-tests:${BUILD_NUMBER} || true"
+                // Changed from 'sh' to 'bat' for Windows server support
+                // The 'true' catch prevents the build from failing if the image was already cleaned
+                bat "docker rmi selenium-tests:${BUILD_NUMBER} || exit 0"
             }
         }
     }
